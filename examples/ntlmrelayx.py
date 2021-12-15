@@ -85,6 +85,27 @@ class MiniShell(cmd.Cmd):
         for row in items:
             print(outputFormat.format(*row))
 
+    @staticmethod
+    def printToFile(items, path, header):
+        colLen = []
+        for i, col in enumerate(header):
+            rowMaxLen = max([len(row[i]) for row in items])
+            colLen.append(max(rowMaxLen, len(col)))
+
+        outputFormat = ' '.join(['{%d:%ds} ' % (num, width) for num, width in enumerate(colLen)])
+
+        with open(path, 'w') as file_object:
+            # Print header
+            file_object.write(outputFormat.format(*header))
+            file_object.write('\n')
+            file_object.write('  '.join(['-' * itemLen for itemLen in colLen]))
+            file_object.write('\n')
+
+            # And now the rows
+            for row in items:
+                file_object.write(outputFormat.format(*row))
+                file_object.write('\n')
+
     def emptyline(self):
         pass
 
@@ -145,6 +166,24 @@ class MiniShell(cmd.Cmd):
                     logging.info('Expect target/username/admin = value')
                 else:
                     self.printTable(items, header=headers)
+            else:
+                logging.info('No Relays Available!')
+
+    def do_socks_to_file(self, args):
+        headers = ["Protocol", "Target", "Username", "AdminStatus", "Port"]
+        url = "http://localhost:9090/ntlmrelayx/api/v1.0/relays"
+        try:
+            proxy_handler = ProxyHandler({})
+            opener = build_opener(proxy_handler)
+            response = Request(url)
+            r = opener.open(response)
+            result = r.read()
+            items = json.loads(result)
+        except Exception as e:
+            logging.error("ERROR: %s" % str(e))
+        else:
+            if len(items) > 0:
+                self.printToFile(items, args, header=headers)
             else:
                 logging.info('No Relays Available!')
 
