@@ -18,6 +18,7 @@ except pkg_resources.DistributionNotFound:
     print("Cannot determine Impacket version. "
           "If running from source you should at least run \"python setup.py egg_info\"")
 BANNER = "Impacket v{} - Copyright 2023 Fortra\n".format(version)
+BANNER += "Forked and modified by executionByFork\n"
 WARNING_BANNER = "".join(("===============================================================================\n",
                           "  Warning: This functionality will be deprecated in the next Impacket version  \n", 
                           "===============================================================================\n"))
