@@ -1407,7 +1407,7 @@ class SAMHashes(OfflineRegistry):
         if len(self.__itemsFound) > 0:
             items = sorted(self.__itemsFound)
             fileName = baseFileName+'.sam'
-            fd = openFile(fileName, openFileFunc=openFileFunc)
+            fd = openFile(fileName, mode='a+', openFileFunc=openFileFunc)
             for item in items:
                 fd.write(self.__itemsFound[item]+'\n')
             fd.close()
@@ -1802,7 +1802,7 @@ class LSASecrets(OfflineRegistry):
     def exportSecrets(self, baseFileName, openFileFunc = None):
         if len(self.__secretItems) > 0:
             fileName = baseFileName+'.secrets'
-            fd = openFile(fileName, openFileFunc=openFileFunc)
+            fd = openFile(fileName, mode='a+', openFileFunc=openFileFunc)
             for item in self.__secretItems:
                 fd.write(item+'\n')
             fd.close()
@@ -1811,7 +1811,7 @@ class LSASecrets(OfflineRegistry):
     def exportCached(self, baseFileName, openFileFunc = None):
         if len(self.__cachedItems) > 0:
             fileName = baseFileName+'.cached'
-            fd = openFile(fileName, openFileFunc=openFileFunc)
+            fd = openFile(fileName, mode='a+', openFileFunc=openFileFunc)
             for item in self.__cachedItems:
                 fd.write(item+'\n')
             fd.close()
