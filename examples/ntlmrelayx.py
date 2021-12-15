@@ -94,17 +94,20 @@ class MiniShell(cmd.Cmd):
 
         outputFormat = ' '.join(['{%d:%ds} ' % (num, width) for num, width in enumerate(colLen)])
 
-        with open(path, 'w') as file_object:
-            # Print header
-            file_object.write(outputFormat.format(*header))
-            file_object.write('\n')
-            file_object.write('  '.join(['-' * itemLen for itemLen in colLen]))
-            file_object.write('\n')
-
-            # And now the rows
-            for row in items:
-                file_object.write(outputFormat.format(*row))
+        try:
+            with open(path, 'w') as file_object:
+                # Print header
+                file_object.write(outputFormat.format(*header))
                 file_object.write('\n')
+                file_object.write('  '.join(['-' * itemLen for itemLen in colLen]))
+                file_object.write('\n')
+
+                # And now the rows
+                for row in items:
+                    file_object.write(outputFormat.format(*row))
+                    file_object.write('\n')
+        except Exception as e:
+            logging.error("ERROR: %s" % str(e))
 
     def emptyline(self):
         pass
